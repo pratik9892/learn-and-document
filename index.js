@@ -81,3 +81,82 @@ y = "12";
 y = false;
 y = "Pratik";
 console.log(y);
+// these is how we can implement any datatype without using the any word
+// if you want to define a variable of type any then either mention ":any" while declaring or donnot assign a value while declaring variable
+// any -> used to get rid of TS type checking
+// example -> if we donnot know the type of the varibale coming from a client or server
+//            like if we have two clients i. web and ii. mobile one sends userId in number and other
+//            sends in string so we can use any type to counter these
+// void -> means it doesnt return anything mainly used in functions 
+function car() {
+    //return "10"
+    // gives an error that return type is void
+}
+// the above func will not return anything so we give its type as void
+function sim() {
+    // return 10
+    // return "100"
+    // we can return either a string or a number here
+    return 0;
+}
+// ##### ENUMS #####
+// represents named constants and is often reffered as enums
+// we have a Ticket status ["initialized","pending","resolved"]
+// define these in TS see below
+var ticketStatus;
+(function (ticketStatus) {
+    ticketStatus[ticketStatus["INITIALIZED"] = 0] = "INITIALIZED";
+    ticketStatus[ticketStatus["PENDING"] = 1] = "PENDING";
+    ticketStatus[ticketStatus["RESOLVED"] = 2] = "RESOLVED";
+    ticketStatus[ticketStatus["CANCELLED"] = 3] = "CANCELLED";
+})(ticketStatus || (ticketStatus = {}));
+// JS converts these enum into iife
+var Ticket = {
+    id: 1,
+    title: "new ticket",
+    status: ticketStatus.INITIALIZED
+};
+//console.log(Ticket.status);
+// here Ticket.status will be 0 as it will be mapped to enum ticketStatus where INITIALIZED is at 0 index
+if (ticketStatus.INITIALIZED == Ticket.status) {
+    // console.log(ticketStatus.INITIALIZED + "      " + Ticket.status);
+}
+// if we see logs both will have value 0 and it will be true
+// now we will change the mapping of the index above the enums were mapped according to the index
+var StatusCodes;
+(function (StatusCodes) {
+    StatusCodes[StatusCodes["NotFound"] = 404] = "NotFound";
+    StatusCodes[StatusCodes["Success"] = 200] = "Success";
+    StatusCodes[StatusCodes["Created"] = 201] = "Created";
+    StatusCodes[StatusCodes["Accepted"] = 202] = "Accepted";
+    StatusCodes[StatusCodes["BadRequest"] = 400] = "BadRequest";
+})(StatusCodes || (StatusCodes = {}));
+var response = {
+    url: "https://example.com",
+    method: "GET",
+    data: [],
+    status: StatusCodes.Success
+};
+// console.log(response.status);
+// here it will ouput 200 as we have changed the mapping if we didnt change the mapping the console log would be 1(index)
+// ##### TYPE INFERING #####
+var result = {
+    name: "Pratik",
+    marks: 89
+};
+console.log(result);
+// updating an existing key value pair
+result.marks = 99;
+// adding a new key value pair to an existing object
+result.address = "Rose Lane";
+// it infers types as {name : string, marks : number}
+// so it does not contain any address key so it throws error
+var result1 = {
+    name: "Pratik1",
+    marks: 99
+};
+result1.marks = 0;
+// now it will not give any error as we have defined it and also its type
+// and also we have used address? for optional key
+result1.address = "Rose Lane 1";
+console.log(result);

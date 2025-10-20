@@ -149,3 +149,161 @@ function sim() : (number | string){
     // we can return either a string or a number here
     return 0
 }
+
+// ##### ENUMS #####
+
+// represents named constants and is often reffered as enums
+// we have a Ticket status ["initialized","pending","resolved"]
+// define these in TS see below
+
+enum ticketStatus {
+    INITIALIZED,
+    PENDING,
+    RESOLVED,
+    CANCELLED
+}
+
+// JS converts these enum into iife
+
+const Ticket = {
+    id : 1,
+    title : "new ticket",
+    status : ticketStatus.INITIALIZED
+}
+
+//console.log(Ticket.status);
+
+// here Ticket.status will be 0 as it will be mapped to enum ticketStatus where INITIALIZED is at 0 index
+  
+if(ticketStatus.INITIALIZED == Ticket.status){
+   // console.log(ticketStatus.INITIALIZED + "      " + Ticket.status);
+}
+
+// if we see logs both will have value 0 and it will be true
+
+
+// now we will change the mapping of the index above the enums were mapped according to the index
+
+enum StatusCodes {
+    NotFound = 404,
+    Success = 200,
+    Created = 201,
+    Accepted = 202,
+    BadRequest = 400
+}
+
+const response = {
+    url : "https://example.com",
+    method : "GET",
+    data : [],
+    status : StatusCodes.Success
+}
+
+// console.log(response.status);
+// here it will ouput 200 as we have changed the mapping if we didnt change the mapping the console log would be 1(index)
+
+// ##### TYPE INFERING #####
+
+const result = {
+    name : "Pratik",
+    marks : 89
+}
+// console.log(result); -> { name: 'Pratik', marks: 89 }
+
+// updating an existing key value pair
+result.marks = 99
+
+// adding a new key value pair to an existing object
+result.address = "Rose Lane"
+
+// it infers types as {name : string, marks : number}
+// so it does not contain any address key so it throws error
+const result1 : {name:string,marks:number,address?:string} = {
+    name : "Pratik1",
+    marks : 99
+}
+
+result1.marks = 0
+
+// now it will not give any error as we have defined it and also its type
+// and also we have used address? for optional key
+result1.address = "Rose Lane 1"
+// console.log(result); -> { name: 'Pratik', marks: 99, address: 'Rose Lane' }
+
+// lets say we have 100s of these results now that {name:string,marks:number} we have to write everytime so instead of that we can give it a type /such as type Result = {name:string,marks:number} and use const result2 : Result = { ... }
+
+type Result = {name : string , marks : number}
+
+const res3:Result = {
+    name : "Pratik",
+    marks : 89
+} 
+
+// SIMPLE TASK
+/**
+ * we want to define common type for authentication form
+ * this common type will take multiple parameters
+ *  - name of the form
+ *  - how to handle submission of the form which is a function
+ *  - how to hanfle reset of a form which is a fucntion
+ *  - text after clicking submitting button is clicked
+ * 
+ */
+
+// so here we can use interface
+
+// what i wrote
+interface Form {
+    name : string;
+    handleSubmission(): void;
+    handleReset() : void ;
+    textAfterSubmit() :string
+}
+
+// what sanket wrote
+interface AuthForm {
+    name : string,
+    submitText : string,
+    onReset : (e:any) => void,
+    onSubmit : (e:any) => void
+}
+
+const loginForm:AuthForm = {
+    name : "Login Form",
+    submitText : "Logged In",
+    onReset : (e) => {
+        // some implementation
+    },
+    onSubmit : (e) => {
+        // some implementation
+    }
+}
+
+// type vs interface
+
+type text = string
+const name : text = "Pratik"
+// we can use type for primitive like these but we cannot use interface for these
+
+// for arrays
+type stringArray = string[]
+
+interface strArr {
+    [index : number] : string 
+}
+
+// lets say we want to define pairs or triplets or custom tuples
+type pair = [number,number]
+type triplet = [number,number,number]
+
+interface pairNum  {
+    first : number,
+    second : number
+}
+
+// can type and interface represent functions
+type logger = (msg:string,errCode:number) => void
+
+interface loggerInterface {
+    log:(msg:string,errCode:number) => void
+}
