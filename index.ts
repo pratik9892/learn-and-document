@@ -306,4 +306,119 @@ type logger = (msg:string,errCode:number) => void
 
 interface loggerInterface {
     log:(msg:string,errCode:number) => void
+}   
+
+// defining unions is possible in types not possible in interface
+
+type unionOfStrand = number | string | boolean;
+
+// interface helps us to implement many OOPS features
+
+interface ComplexNumber {
+    real : number,
+    imaginary : number,
 }
+
+interface ComplexNumber {
+    add : (num : ComplexNumber) => ComplexNumber
+}
+
+// typescript will merge both as it has same name
+// for example :-
+// interface ComplexNumber {
+//    real : number,
+//    imaginary : number,
+//    add : (num : ComplexNumber) => ComplexNumber
+// }
+
+let schoolName : "STT" | "SEHS" = "SEHS";
+let another:string = "SJHS"
+
+// schoolName = another
+// error as school name can be only "STT" or "SEHS"
+
+another = schoolName
+// no error as another can be any string but it has to be of string type
+
+type Complex = {
+    real : number,
+    imaginary : number,
+}
+
+interface IComplex {
+    real : number,
+    imaginary : number,
+}
+
+let c1:Complex = {
+    real : 10,
+    imaginary : 10
+}
+
+let c2:IComplex = {
+    real : 9,
+    imaginary : 9
+}
+
+console.log(c1);
+
+c1 = c2; // it will assign c2 to c1 as there members are same even though name is different ans consider both as same
+// but in the complex type and icomplex interface if we change members or change there change like real : "0" | 0 than it will throw
+// error as now members are different
+
+// also in functions parameters and return type should be same
+// like if Complex has a function add : (c : Complex) => Complex 
+// than IComplex should also have add : (c : IComplex) => IComplex
+// if IComplex has ass : (c : Icomplex,index : number) => IComplex than it will throw error as both are now different
+
+console.log(c1);
+
+
+// ######## Classes ######
+
+class Product {
+    // first declare like how we have declared below
+    name : string;
+    price : number;
+    constructor(name:string,price:number){
+        this.name = name;
+        this.price = price;
+    }
+
+    // for methods
+
+    display() : number {
+        console.log("Product name is " + this.name + "and price is " + this.price);
+        return 23;
+    }
+}
+
+const p3 = new Product("Iphone",25000)
+
+// new example
+
+class Product1 {
+    // first declare like how we have declared below
+    readonly name : string; // not able to update from outside aswell as inside from class only in constructor we can set and after that no change
+    private price : number;
+    constructor(name:string,price:number){
+        this.name = name;
+        this.price = price;
+    }
+
+    // for methods
+
+    display() : number {
+        console.log("Product name is " + this.name + "and price is " + this.price);
+        return 23;
+    }
+
+    setValue(n:number):void{
+        if(n <= 0) return;
+        this.price = n; 
+    }
+}
+
+const per = new Product("Apple",34)
+per.price = -20  // anybody can update these to negative so we can use getters and setters but safeguard more we can use private keyword
+// to safeguard the important properties that must not be changed by anybody
